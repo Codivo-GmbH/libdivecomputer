@@ -459,7 +459,7 @@ oceanic_atom2_parser_cache (oceanic_atom2_parser_t *parser)
 	} else if (parser->model == DSX) {
 		if (mode < DSX_SIDEGAUGE) {
 			o2_offset = parser->logbooksize + 0x89 + mode * 16;
-			he_offset = parser->logbooksize + 0xB9 + mode * 16;
+			he_offset = 0xB9 + mode * 16;
 			ngasmixes = 6;
 		} else {
 			ngasmixes = 0;
@@ -539,7 +539,6 @@ oceanic_atom2_parser_get_field (dc_parser_t *abstract, dc_field_type_t type, uns
 				*((unsigned int *) value) = (array_uint16_le(data + parser->footer) & 0x7FFF) * 60;
 			else
 				*((unsigned int *) value) = parser->divetime;
-			}
 			break;
 		case DC_FIELD_MAXDEPTH:
 			if (parser->model == F10A || parser->model == F10B ||
@@ -647,13 +646,6 @@ oceanic_atom2_parser_get_field (dc_parser_t *abstract, dc_field_type_t type, uns
 				default:
 					return DC_STATUS_DATAFORMAT;
 				}
-			}
-			break;
-		case DC_FIELD_TEMPERATURE_MINIMUM:
-			if (parser->model == I770R) {
-				*((double *) value) = (data[parser->footer + 6] - 32.0) * (5.0 / 9.0);
-			} else {
-				return DC_STATUS_UNSUPPORTED;
 			}
 			break;
 		default:
