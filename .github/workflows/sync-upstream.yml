@@ -1,0 +1,27 @@
+name: Sync upstream daily
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "40 16 * * *" # Daily at 04:17 UTC
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Sync upstream master
+        run: |
+          git remote add upstream https://github.com/libdivecomputer/libdivecomputer.git
+          git fetch upstream master
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git merge --no-edit upstream/master
+          git push origin HEAD:master
