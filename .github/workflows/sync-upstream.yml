@@ -3,8 +3,7 @@ name: Sync upstream daily
 on:
   workflow_dispatch:
   schedule:
-   - cron: "42 16 * * *"
-      timezone: "Europe/Berlin"
+    - cron: "15 16 * * *"
 
 permissions:
   contents: write
